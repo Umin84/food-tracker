@@ -1,24 +1,127 @@
-Today
-Monday, May 25
-0 kcal
-of 2000 goal · 2000 left
-Protein
-0g
-/ 150g
-Carbs
-0g
-/ 250g
-Fat
-0g
-/ 65g
-Fiber
-0g
-/ 30g
-Log food
-Food name…
-Amount
-
-g
-+ Log
-Today's log
-Nothing logged yet
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Food Tracker"/>
+<title>Food Tracker</title>
+<style>
+html,body{margin:0;padding:0;background:#f2f2f7;font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;color:#1c1c1e}
+*{box-sizing:border-box}
+#app{max-width:430px;margin:0 auto;padding:16px 16px 40px}
+h1{font-size:28px;font-weight:700;margin:12px 0 4px;color:#1c1c1e}
+.date{font-size:13px;color:#8e8e93;margin-bottom:16px}
+.card{background:#fff;border-radius:16px;padding:16px;margin-bottom:12px}
+.ring-row{display:flex;align-items:center;gap:16px}
+.ring-text .cal{font-size:32px;font-weight:700;color:#1c1c1e;line-height:1}
+.ring-text .cal span{font-size:17px;font-weight:400;color:#8e8e93}
+.ring-text .sub{font-size:13px;color:#8e8e93;margin-top:4px}
+.macro-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.mc{background:#fff;border-radius:14px;padding:10px 8px 12px;text-align:left}
+.mc .lbl{font-size:10px;font-weight:600;color:#8e8e93;text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px}
+.mc .val{font-size:20px;font-weight:700;color:#1c1c1e;line-height:1}
+.mc .val span{font-size:11px;font-weight:400;color:#8e8e93}
+.mc .goal{font-size:10px;color:#c7c7cc;margin-top:2px}
+.bar-track{height:3px;background:#e5e5ea;border-radius:2px;margin-top:7px}
+.bar-fill{height:3px;border-radius:2px;transition:width .4s ease}
+.sec-label{font-size:13px;font-weight:600;color:#8e8e93;text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px}
+input[type=text],input[type=number],select{-webkit-appearance:none;appearance:none;background:#f2f2f7;border:none;border-radius:10px;height:44px;font-size:17px;padding:0 12px;color:#1c1c1e;width:100%;font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif}
+input[type=text]:focus,input[type=number]:focus,select:focus{outline:none;background:#e8e8ed}
+.input-wrap{position:relative;margin-bottom:8px}
+.ac-drop{display:none;position:absolute;top:46px;left:0;right:0;background:#fff;border-radius:12px;z-index:99;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.ac-item{display:flex;justify-content:space-between;align-items:center;padding:13px 14px;font-size:15px;color:#1c1c1e;border-bottom:1px solid #f2f2f7;cursor:pointer}
+.ac-item:last-child{border-bottom:none}
+.ac-item:active{background:#f2f2f7}
+.ac-meta{font-size:12px;color:#8e8e93}
+.bottom-row{display:flex;gap:8px}
+.bottom-row input[type=number]{width:90px;flex:none}
+.bottom-row select{flex:1}
+.log-btn{height:44px;background:#30d158;color:#fff;font-size:17px;font-weight:600;border:none;border-radius:10px;padding:0 20px;cursor:pointer;white-space:nowrap;font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;-webkit-tap-highlight-color:transparent}
+.log-btn:active{opacity:.8}
+.entry{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f2f2f7}
+.entry:last-child{border-bottom:none}
+.entry-name{flex:1;font-size:15px;font-weight:500;color:#1c1c1e}
+.entry-amt{font-size:13px;color:#8e8e93;white-space:nowrap}
+.entry-cal{font-size:13px;color:#8e8e93;text-align:right;min-width:70px;white-space:nowrap}
+.entry-del{background:none;border:none;font-size:22px;color:#c7c7cc;padding:0 2px;cursor:pointer;line-height:1;-webkit-tap-highlight-color:transparent}
+.entry-del:active{color:#ff3b30}
+.empty{font-size:15px;color:#c7c7cc;text-align:center;padding:16px 0;font-style:italic}
+</style>
+</head>
+<body>
+<div id="app">
+<h1>Today</h1>
+<div class="date" id="day-date"></div>
+<div class="card">
+<div class="ring-row">
+<svg width="68" height="68" viewBox="0 0 68 68">
+<circle cx="34" cy="34" r="28" fill="none" stroke-width="6" stroke="#e5e5ea"/>
+<circle id="ring-arc" cx="34" cy="34" r="28" fill="none" stroke-width="6" stroke="#30d158" stroke-linecap="round" stroke-dasharray="175.9" stroke-dashoffset="175.9" transform="rotate(-90 34 34)" style="transition:stroke-dashoffset .5s"/>
+</svg>
+<div class="ring-text">
+<div class="cal"><span id="ring-cal">0</span><span> kcal</span></div>
+<div class="sub">of 2000 goal &middot; <span id="ring-rem">2000</span> left</div>
+</div>
+</div>
+</div>
+<div class="macro-grid">
+<div class="mc"><div class="lbl">Protein</div><div class="val"><span id="m-protein">0</span><span>g</span></div><div class="goal">/ 150g</div><div class="bar-track"><div class="bar-fill" id="b-protein" style="background:#30d158;width:0%"></div></div></div>
+<div class="mc"><div class="lbl">Carbs</div><div class="val"><span id="m-carbs">0</span><span>g</span></div><div class="goal">/ 250g</div><div class="bar-track"><div class="bar-fill" id="b-carbs" style="background:#0a84ff;width:0%"></div></div></div>
+<div class="mc"><div class="lbl">Fat</div><div class="val"><span id="m-fat">0</span><span>g</span></div><div class="goal">/ 65g</div><div class="bar-track"><div class="bar-fill" id="b-fat" style="background:#ff9f0a;width:0%"></div></div></div>
+<div class="mc"><div class="lbl">Fiber</div><div class="val"><span id="m-fiber">0</span><span>g</span></div><div class="goal">/ 30g</div><div class="bar-track"><div class="bar-fill" id="b-fiber" style="background:#bf5af2;width:0%"></div></div></div>
+</div>
+<div class="card">
+<div class="sec-label">Log food</div>
+<div class="input-wrap">
+<input id="food-name" type="text" placeholder="Food name…" autocomplete="off" autocorrect="off" spellcheck="false"/>
+<div class="ac-drop" id="ac-drop"></div>
+</div>
+<div class="bottom-row">
+<input id="food-amt" type="number" placeholder="Amount" min="0" step="any" inputmode="decimal"/>
+<select id="food-unit"><option value="g">g</option><option value="oz">oz</option><option value="ml">ml</option><option value="fl oz">fl oz</option><option value="cup">cup</option><option value="tbsp">tbsp</option><option value="tsp">tsp</option><option value="serving">serving</option></select>
+<button class="log-btn" id="log-btn">+ Log</button>
+</div>
+</div>
+<div class="card">
+<div class="sec-label">Today's log</div>
+<div id="log-list"></div>
+</div>
+</div>
+<script>
+var GOALS={cal:2000,protein:150,carbs:250,fat:65,fiber:30};
+var UNIT_G={g:1,oz:28.3495,ml:1,'fl oz':29.5735,cup:240,tbsp:15,tsp:5,serving:null};
+var FOODS=[{name:'Grilled chicken',per:100,unit:'g',cal:165,protein:31,carbs:0,fat:3.6,fiber:0},{name:'Chicken breast',per:100,unit:'g',cal:165,protein:31,carbs:0,fat:3.6,fiber:0},{name:'Chicken thigh',per:100,unit:'g',cal:209,protein:26,carbs:0,fat:11,fiber:0},{name:'Ground beef 85%',per:100,unit:'g',cal:215,protein:26,carbs:0,fat:13,fiber:0},{name:'Steak ribeye',per:100,unit:'g',cal:291,protein:24,carbs:0,fat:22,fiber:0},{name:'Turkey breast',per:100,unit:'g',cal:135,protein:30,carbs:0,fat:1,fiber:0},{name:'Salmon',per:100,unit:'g',cal:208,protein:20,carbs:0,fat:13,fiber:0},{name:'Tuna canned',per:100,unit:'g',cal:116,protein:26,carbs:0,fat:1,fiber:0},{name:'Shrimp',per:100,unit:'g',cal:99,protein:24,carbs:0.2,fat:0.3,fiber:0},{name:'Egg',per:1,unit:'serving',cal:78,protein:6,carbs:0.6,fat:5,fiber:0},{name:'Egg white',per:1,unit:'serving',cal:17,protein:3.6,carbs:0.2,fat:0,fiber:0},{name:'Greek yogurt',per:100,unit:'g',cal:59,protein:10,carbs:3.6,fat:0.4,fiber:0},{name:'Cottage cheese',per:100,unit:'g',cal:98,protein:11,carbs:3.4,fat:4.3,fiber:0},{name:'Cheddar cheese',per:100,unit:'g',cal:403,protein:25,carbs:1.3,fat:33,fiber:0},{name:'Whole milk',per:100,unit:'ml',cal:61,protein:3.2,carbs:4.8,fat:3.3,fiber:0},{name:'Almond milk',per:100,unit:'ml',cal:17,protein:0.6,carbs:1.5,fat:1.1,fiber:0.3},{name:'Whey protein',per:30,unit:'g',cal:120,protein:24,carbs:3,fat:2,fiber:0},{name:'Oatmeal dry',per:100,unit:'g',cal:389,protein:17,carbs:66,fat:7,fiber:10},{name:'White rice cooked',per:100,unit:'g',cal:130,protein:2.7,carbs:28,fat:0.3,fiber:0.4},{name:'Brown rice cooked',per:100,unit:'g',cal:112,protein:2.6,carbs:23,fat:0.9,fiber:1.8},{name:'Pasta cooked',per:100,unit:'g',cal:131,protein:5,carbs:25,fat:1.1,fiber:1.8},{name:'Sweet potato',per:100,unit:'g',cal:86,protein:1.6,carbs:20,fat:0.1,fiber:3},{name:'Potato baked',per:100,unit:'g',cal:93,protein:2.5,carbs:21,fat:0.1,fiber:2.2},{name:'Bread whole wheat',per:100,unit:'g',cal:247,protein:13,carbs:41,fat:3.4,fiber:7},{name:'White bread',per:100,unit:'g',cal:265,protein:9,carbs:49,fat:3.2,fiber:2.7},{name:'Tortilla flour',per:1,unit:'serving',cal:146,protein:4,carbs:24,fat:4,fiber:1.5},{name:'Broccoli',per:100,unit:'g',cal:34,protein:2.8,carbs:7,fat:0.4,fiber:2.6},{name:'Spinach',per:100,unit:'g',cal:23,protein:2.9,carbs:3.6,fat:0.4,fiber:2.2},{name:'Avocado',per:100,unit:'g',cal:160,protein:2,carbs:9,fat:15,fiber:6.7},{name:'Banana',per:1,unit:'serving',cal:89,protein:1.1,carbs:23,fat:0.3,fiber:2.6},{name:'Apple',per:1,unit:'serving',cal:95,protein:0.5,carbs:25,fat:0.3,fiber:4.4},{name:'Blueberries',per:100,unit:'g',cal:57,protein:0.7,carbs:14,fat:0.3,fiber:2.4},{name:'Strawberries',per:100,unit:'g',cal:32,protein:0.7,carbs:7.7,fat:0.3,fiber:2},{name:'Almonds',per:100,unit:'g',cal:579,protein:21,carbs:22,fat:50,fiber:12.5},{name:'Peanut butter',per:100,unit:'g',cal:588,protein:25,carbs:20,fat:50,fiber:6},{name:'Olive oil',per:100,unit:'ml',cal:884,protein:0,carbs:0,fat:100,fiber:0},{name:'Coffee black',per:240,unit:'ml',cal:5,protein:0.3,carbs:0,fat:0,fiber:0},{name:'Black beans',per:100,unit:'g',cal:132,protein:8.9,carbs:24,fat:0.5,fiber:8.7},{name:'Lentils cooked',per:100,unit:'g',cal:116,protein:9,carbs:20,fat:0.4,fiber:7.9},{name:'Orange',per:1,unit:'serving',cal:62,protein:1.2,carbs:15,fat:0.2,fiber:3.1}];
+var library=JSON.parse(localStorage.getItem('ft_lib3')||'null');
+if(!library){library=FOODS.map(function(f,i){return Object.assign({},f,{id:'b'+i});});}
+var userHistory=JSON.parse(localStorage.getItem('ft_uh3')||'[]');
+var log=JSON.parse(localStorage.getItem('ft_log_'+tod())||'[]');
+var nextId=Date.now();
+var acIdx=-1;
+var acMatches=[];
+function tod(){return new Date().toISOString().slice(0,10);}
+function save(){localStorage.setItem('ft_lib3',JSON.stringify(library));localStorage.setItem('ft_uh3',JSON.stringify(userHistory));localStorage.setItem('ft_log_'+tod(),JSON.stringify(log));}
+function getMatches(q){if(!q){return userHistory.slice(0,4).concat(library.slice(0,3)).slice(0,6);}var lq=q.toLowerCase();var lib=library.filter(function(f){return f.name.toLowerCase().indexOf(lq)!==-1;});var hist=userHistory.filter(function(h){return h.name.toLowerCase().indexOf(lq)!==-1&&!lib.find(function(f){return f.name.toLowerCase()===h.name.toLowerCase();});});return lib.concat(hist).slice(0,7);}
+var nameEl=document.getElementById('food-name');
+var amtEl=document.getElementById('food-amt');
+var unitEl=document.getElementById('food-unit');
+var acDrop=document.getElementById('ac-drop');
+function renderAC(){var q=nameEl.value.trim();acMatches=getMatches(q);if(!acMatches.length){acDrop.style.display='none';return;}acDrop.innerHTML='';acIdx=-1;acMatches.forEach(function(f){var d=document.createElement('div');d.className='ac-item';d.innerHTML='<span>'+f.name+'</span><span class="ac-meta">'+f.cal+' kcal/'+f.per+f.unit+'</span>';d.addEventListener('touchstart',function(e){e.preventDefault();pickFood(f);},{passive:false});d.addEventListener('mousedown',function(e){e.preventDefault();pickFood(f);});acDrop.appendChild(d);});acDrop.style.display='block';}
+function pickFood(f){nameEl.value=f.name;nameEl.dataset.picked=f.id||f.name;unitEl.value=(f.unit==='serving')?'serving':'g';acDrop.style.display='none';amtEl.focus();}
+nameEl.addEventListener('input',function(){nameEl.dataset.picked='';renderAC();});
+nameEl.addEventListener('focus',function(){renderAC();});
+document.addEventListener('click',function(e){if(!acDrop.contains(e.target)&&e.target!==nameEl)acDrop.style.display='none';});
+function calcN(food,amt,unit){var ratio;if(unit==='serving'||food.unit==='serving'){ratio=amt;}else{var ag=amt*(UNIT_G[unit]||1);var bg=food.per*(UNIT_G[food.unit]||1);ratio=ag/bg;}return{cal:food.cal*ratio,protein:food.protein*ratio,carbs:food.carbs*ratio,fat:food.fat*ratio,fiber:(food.fiber||0)*ratio};}
+function logFood(){var name=nameEl.value.trim();var amt=parseFloat(amtEl.value);var unit=unitEl.value;if(!name){nameEl.focus();return;}if(!amt||amt<=0){amtEl.focus();return;}var food=null;var picked=nameEl.dataset.picked;if(picked){food=library.find(function(f){return f.id===picked;})||userHistory.find(function(f){return f.name===picked;});}if(!food){food=library.find(function(f){return f.name.toLowerCase()===name.toLowerCase();})||userHistory.find(function(f){return f.name.toLowerCase()===name.toLowerCase();});}var n={cal:0,protein:0,carbs:0,fat:0,fiber:0};if(food)n=calcN(food,amt,unit);if(!food){var nf={id:'u'+Date.now(),name:name,per:100,unit:'g',cal:0,protein:0,carbs:0,fat:0,fiber:0,custom:true};userHistory.unshift(nf);}else{userHistory=userHistory.filter(function(h){return h.name.toLowerCase()!==name.toLowerCase();});userHistory.unshift(Object.assign({},food,{lastUsed:Date.now()}));}if(userHistory.length>200)userHistory=userHistory.slice(0,200);log.push({id:nextId++,name:name,amt:amt,unit:unit,cal:n.cal,protein:n.protein,carbs:n.carbs,fat:n.fat,fiber:n.fiber});save();nameEl.value='';amtEl.value='';nameEl.dataset.picked='';acDrop.style.display='none';renderLog();renderMacros();nameEl.focus();}
+document.getElementById('log-btn').addEventListener('click',logFood);
+amtEl.addEventListener('keydown',function(e){if(e.key==='Enter')logFood();});
+function calcTotals(){return log.reduce(function(t,e){return{cal:t.cal+e.cal,protein:t.protein+e.protein,carbs:t.carbs+e.carbs,fat:t.fat+e.fat,fiber:t.fiber+e.fiber};},{cal:0,protein:0,carbs:0,fat:0,fiber:0});}
+function renderMacros(){var t=calcTotals();document.getElementById('ring-cal').textContent=Math.round(t.cal);document.getElementById('ring-rem').textContent=Math.max(0,Math.round(GOALS.cal-t.cal));var pct=Math.min(1,t.cal/GOALS.cal);document.getElementById('ring-arc').setAttribute('stroke-dashoffset',(175.9*(1-pct)).toFixed(1));document.getElementById('ring-arc').setAttribute('stroke',pct>=1?'#ff3b30':'#30d158');['protein','carbs','fat','fiber'].forEach(function(k){document.getElementById('m-'+k).textContent=Math.round(t[k]);document.getElementById('b-'+k).style.width=Math.min(100,Math.round(t[k]/GOALS[k]*100))+'%';});}
+function renderLog(){var el=document.getElementById('log-list');if(!log.length){el.innerHTML='<div class="empty">Nothing logged yet</div>';return;}el.innerHTML='';var reversed=log.slice().reverse();reversed.forEach(function(e){var row=document.createElement('div');row.className='entry';var mac=e.protein?Math.round(e.cal)+' kcal · P:'+Math.round(e.protein)+'g C:'+Math.round(e.carbs)+'g F:'+Math.round(e.fat)+'g':Math.round(e.cal)+' kcal';row.innerHTML='<span class="entry-name">'+e.name+'</span><span class="entry-amt">'+e.amt+' '+e.unit+'</span><span class="entry-cal">'+mac+'</span><button class="entry-del" data-id="'+e.id+'" aria-label="Remove">&times;</button>';el.appendChild(row);});el.querySelectorAll('.entry-del').forEach(function(btn){btn.addEventListener('click',function(){log=log.filter(function(e){return e.id!==+btn.dataset.id;});save();renderLog();renderMacros();});});}
+document.getElementById('day-date').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+renderLog();
+renderMacros();
+</script>
+</body>
+</html>
